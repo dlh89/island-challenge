@@ -13,16 +13,18 @@ class IslandChallenge
     public $counted_island_cells = array();
     public $island_cells = array();
 
-    public function __construct()
+    public function __construct($map = null)
     {
-        $this->build_map();
-        // $this->build_test_map();
-        $this->print_map();
+        if ($map) {
+            $this->build_custom_map($map);
+        } else {
+            $this->build_random_map();
+        }
+
         $this->set_islands();
-        $this->print_islands_details();
     }
 
-    private function build_map()
+    public function build_random_map()
     {
         for ($i = 0; $i < $this::ROWS; $i++) {
             $row_array = [];
@@ -34,18 +36,12 @@ class IslandChallenge
         }
     }
 
-    private function build_test_map()
+    public function build_custom_map($map)
     {
-        $this->map = array(
-            array(0, 0, 0, 0, 1),
-            array(0, 0, 1, 0, 1),
-            array(0, 0, 1, 0, 0),
-            array(1, 1, 1, 0, 0),
-            array(0, 0, 1, 0, 1),
-        );
+        $this->map = $map;
     }
 
-    private function print_map()
+    public function print_map()
     {
         echo "map:\n";
         foreach ($this->map as $array) {
@@ -135,12 +131,12 @@ class IslandChallenge
         return false;
     }
 
-    private function print_islands_details()
+    public function get_islands_details()
     {
         $noun = count($this->islands) === 1 ? 'island' : 'islands';
-        echo 'This map contains ' . count($this->islands) . ' ' . $noun . '.';
-        echo "\n\n";
-        print_r($this->islands);
+        $island_details =  'This map contains ' . count($this->islands) . ' ' . $noun . '.';
+
+        return $island_details;
     }
 }
 
